@@ -18,13 +18,13 @@ class Solution {
         return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
     }
     
-    void traverse(TreeNode root, int currH, int h, List<List<Integer>> ans) {
+    void traverse(TreeNode root, int currH, List<List<Integer>> ans) {
         if(root == null) {
             return;
         }
         ans.get(currH).add(root.val);
-        traverse(root.left, currH + 1, h, ans);
-        traverse(root.right, currH + 1, h, ans);
+        traverse(root.left, currH + 1, ans);
+        traverse(root.right, currH + 1, ans);
     }
     
     public List<List<Integer>> levelOrder(TreeNode root) {
@@ -33,7 +33,7 @@ class Solution {
         for(int i = 0 ; i < height; i++) {
             ans.add(new ArrayList<>());
         }
-        traverse(root, 0, height, ans);
+        traverse(root, 0, ans);
         return ans;
     }
     
