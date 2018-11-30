@@ -26,6 +26,8 @@ class Solution {
                 if(solve(dict, s, pos + 1, now.get(cur))) {
                     return true;
                 }
+            } else {
+                break;
             }
         }
         return false;
