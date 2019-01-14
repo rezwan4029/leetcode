@@ -9,35 +9,38 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 class Solution {
     
-    List<List<Integer>> ans ;
+    List<List<Integer>> ans;
     
-    public void hasPathSum(TreeNode root, int sum, LinkedList<Integer> curr) {
-        if(root == null) {
-            return ;
-        }
-        
-        if(root.left == null && root.right == null && sum == root.val) {
-            curr.add(root.val);
-            ans.add(curr);
-            curr.removeLast();
+    void solve(TreeNode root, int sum, List<Integer> path) {
+        if(root == null) return;
+        if(root.left == null && root.right == null) {
+            if(sum == root.val) {
+                path.add(root.val);
+                ans.add(new ArrayList<>(path));
+                path.remove(path.size() - 1);
+            }
             return;
         }
-        
-        curr.add(root.val);
-        hasPathSum(root.left, sum - root.val, curr);
-        curr.removeLast();
-        
-        curr.add(root.val);
-        hasPathSum(root.right, sum - root.val, curr);
-        curr.removeLast();
+        path.add(root.val);
+        solve(root.left, sum - root.val, path);
+        solve(root.right, sum - root.val, path);
+        path.remove(path.size()-1);
     }
     
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
         ans = new ArrayList<>();
-        hasPathSum(root, sum, new LinkedList<>());
+        solve(root, sum, new ArrayList<>());
         return ans;
     }
-    
 }
