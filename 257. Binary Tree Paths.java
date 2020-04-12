@@ -36,28 +36,28 @@ class Solution2 {
             return allPath;
         }
         Stack<Path> stk = new Stack<>();
-        stk.add(new Path(root, new StringBuilder()));
+        stk.add(new Path(root, ""));
         while(stk.size() != 0) {
             Path p = stk.pop();
-            p.currentPath.append(p.now.val);
+            p.currentPath += p.now.val;
             if(p.now.left == null && p.now.right == null) {
-                allPath.add(p.currentPath.toString());
+                allPath.add(p.currentPath);
             }
             if(p.now.left != null) {
-                stk.add(new Path(p.now.left, p.currentPath.append("->")));
+                stk.add(new Path(p.now.left, p.currentPath + "->"));
             }
             if(p.now.right != null) {
-                stk.add(new Path(p.now.right, p.currentPath.append("->")));
+                stk.add(new Path(p.now.right, p.currentPath + "->"));
             }
         }
         return allPath;
     }
     
     class Path {
-        StringBuilder currentPath;
+        String currentPath;
         TreeNode now;
         Path(){}
-        Path(TreeNode _now, StringBuilder _path) {
+        Path(TreeNode _now, String _path) {
             now = _now;
             currentPath = _path;
         }
