@@ -9,10 +9,10 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-class Solution {
-    // Solution 1
+class Solution1 {
+    
     void traverse(TreeNode root, List<Integer> ret){
-        if(root == null){
+        if(root == null) {
             return;
         }
         traverse(root.left, ret);
@@ -26,17 +26,30 @@ class Solution {
         return Ans;
     }
     
-    // Solution 2
+}
+
+class Solution2 {
     public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> order = new ArrayList<>();
         if(root == null) {
-            return new ArrayList<>();
+            return order;
         }
-        List<Integer> ret = new ArrayList<>();
-        List<Integer> r1 = inorderTraversal(root.left);
-        List<Integer> r2 = inorderTraversal(root.right);
-        ret.addAll(r1);
-        ret.add(root.val);
-        ret.addAll(r2);
-        return ret;
+        Stack<TreeNode> Stk = new Stack<>();
+        Stk.add(root);
+        while(Stk.size() != 0) {
+            if(root != null && root.left != null) {
+                Stk.add(root.left);
+                root = root.left;
+            } else {
+                TreeNode curr = Stk.pop();
+                order.add(curr.val);
+                if(curr.right != null) {
+                    Stk.add(curr.right);
+                    root = curr.right;
+                }
+            }
+        }
+        return order;
     }
+    
 }
