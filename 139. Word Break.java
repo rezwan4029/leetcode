@@ -14,16 +14,19 @@ class Solution {
         HashMap<String, Boolean> seen = new HashMap<>();
         while(!q.isEmpty()) {
             String now = q.poll();
-            if(seen.getOrDefault(now, false)) continue;
+            if(seen.getOrDefault(now, false)) {
+                continue;
+            }
             seen.put(now, true);
             if(now.equals(s)) return true;
             for(int i = 0 ; i < n; i++) {
-                String tobe = now + wordDict.get(i);
-                if(s.startsWith(tobe)){
-                    q.add(tobe);
+                String next = now + wordDict.get(i);
+                if(s.startsWith(next)){
+                    q.add(next);
                 }
             }
         }
         return false;
     }
 }
+
