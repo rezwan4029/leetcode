@@ -31,30 +31,23 @@ class Solution1 {
 }
 
 // DP solution
+
 class Solution2 {
+    
     public boolean wordBreak(String s, List<String> wordDict) {
-        if (s == null || s.length() == 0) {
-            return true;
-        }
-        Set<String> dict = new HashSet<>();
-        for (String word : wordDict) {
-            dict.add(word);
-        }
         int n = s.length();
-        boolean[] dp = new boolean[n + 1];
+        boolean dp[] = new boolean[n+1];
         dp[0] = true;
-        for (int i = 1; i <= n; i++) {
-            if (dict.contains(s.substring(0, i))) {
-                dp[i] = true;
-                continue;
-            }
-            for (int j = 0; j < i; j++) {
-                if (dp[j] && dict.contains(s.substring(j, i))) {
-                    dp[i] = true;
-                    break;
-                }
-            }
+        
+        for(int left = 0; left< s.length(); left++){
+            if(!dp[left]) continue;
+            for(String wordStr : wordDict){
+                int right = left + wordStr.length();
+                if(right<=n && s.substring(left,right).equals(wordStr))
+                    dp[right] = true;
+            }    
         }
         return dp[n];
     }
+    
 }
