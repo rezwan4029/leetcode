@@ -30,9 +30,40 @@ class Solution1 {
     }
 }
 
+// Keep track of successful postion which was able to reach
+class Solution2 {
+    
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = wordDict.size();
+        Queue<Integer>q = new LinkedList<>();
+        for(int i = 0 ; i < n ; i++) {
+            if(s.startsWith(wordDict.get(i))){
+                q.add(wordDict.get(i).length());
+            }
+        }
+        if(q.isEmpty()) return false;
+        int len = s.length();
+        boolean seen [] = new boolean[len + 1];
+        while(!q.isEmpty()) {
+            int now = q.poll();
+            if(seen[now]) continue;
+            seen[now] = true;
+            if(now == len) return true;
+            for(int i = 0; i < n; i++) {
+                String next = s.substring(now, len);
+                if(next.startsWith(wordDict.get(i))){
+                    q.add(now + wordDict.get(i).length());
+                }
+            }
+        }
+        return false;
+    }
+}
+
+
 // DP solution
 
-class Solution2 {
+class Solution3 {
     
     public boolean wordBreak(String s, List<String> wordDict) {
         int n = s.length();
