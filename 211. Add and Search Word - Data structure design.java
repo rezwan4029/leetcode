@@ -1,60 +1,58 @@
-// https://leetcode.com/problems/add-and-search-word-data-structure-design/
+// https://leetcode.com/problems/add-and-search-word-data-structure-design
 
-class Node {
-    char ch;
-    HashMap<Character, Node> child = new HashMap<>();
-    boolean wordEnding;
-    
-    Node() {}
-    
-    Node(char x) {
-        ch = x;
-        wordEnding = false;
-    }
-}
 
 class WordDictionary {
 
-    Node root;
+    Trie root;
     
     /** Initialize your data structure here. */
     public WordDictionary() {
-        root = new Node();
+        root = new Trie();
     }
     
     /** Adds a word into the data structure. */
     public void addWord(String word) {
-        Node cur = root;
-        for(int i = 0 ; i < word.length(); i++) {
-            if(cur.child.get(word.charAt(i)) == null) {
-                cur.child.put(word.charAt(i), new Node(word.charAt(i)));
+        Trie curr = root;
+        for(char x: word.toCharArray()) {
+            if(curr.next[ x - 'a'] == null) {
+                curr.next[ x - 'a' ] = new Trie();
             }
-            cur = cur.child.get(word.charAt(i));
+            curr = curr.next[ x - 'a' ];
         }
-        cur.wordEnding = true;
+        curr.ending = true;
     }
     
     /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
     public boolean search(String word) {
-        return match(word, 0, root);
+        return findMatch(root, 0, word);
     }
     
-    public boolean match(String word, int pos, Node cur) {
-        if(pos == word.length()) return cur.wordEnding;
-        char ch = word.charAt(pos);
-        if(ch != '.') {
-            if(cur.child.get(ch) == null) return false;
-            return match(word, pos + 1, cur.child.get(ch));
-        } else {
-            for(char i = 'a' ; i <= 'z'; i++) {
-                 if(cur.child.get(i) != null) {
-                     if(match(word, pos + 1, cur.child.get(i))) {
-                         return true;
-                     }
-                 }
-            }
+    private boolean findMatch(Trie cur, int pos, String word) {
+        if(pos == word.length()) {
+            return cur.ending;
         }
-        return false;
+        char x = word.charAt(pos);
+        if(x != '.') {
+            if(cur.next[x - 'a'] == null) {
+                return false;
+            }
+            return findMatch(cur.next[x - 'a'], pos + 1, word);
+        }
+        
+        boolean ans = false;
+        for(int i = 0; i < 26; i++) {
+            if(cur.next[i] != null) {
+                ans |= findMatch(cur.next[i], pos + 1, word);
+            }
+            if(ans) break;
+        }
+        return ans;
+    }
+    
+    class Trie {
+        Trie next[] = new Trie[26];
+        boolean ending = false;
+        Trie(){}
     }
 }
 
