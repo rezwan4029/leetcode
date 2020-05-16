@@ -29,3 +29,47 @@ class Solution1 {
         return merge;
     }
 }
+
+
+class Solution2 {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        PriorityQueue<Integer> left = new PriorityQueue<>(new Comparator<Integer>(){
+            public int compare(Integer x, Integer y) {
+                return y.compareTo(x);
+            }
+        });
+        
+        PriorityQueue<Integer> right = new PriorityQueue<>();
+        
+        for(int x: nums1) {
+            if(left.size() == 0 || left.peek() > x) {
+                left.add(x);
+            } else {
+                right.add(x);
+            }
+            rebalanceQueues(left, right);
+        }
+        for(int x: nums2) {
+            if(left.size() == 0 || left.peek() > x) {
+                left.add(x);
+            } else {
+                right.add(x);
+            }
+            rebalanceQueues(left, right);
+        }
+        
+        if(left.size() == right.size()) {
+            return (left.peek() + right.peek()) / 2.;
+        }
+        return 1. * left.size() > right.size() ? left.peek() : right.peek();
+    }
+    
+    void rebalanceQueues(PriorityQueue<Integer> x, PriorityQueue<Integer> y) {
+        PriorityQueue<Integer> small = x.size() > y.size() ? y : x;
+        PriorityQueue<Integer> large = x.size() > y.size() ? x : y;
+        if(large.size() - small.size() == 2) {
+            small.add(large.poll());
+        }
+    }
+    
+}
