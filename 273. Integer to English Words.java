@@ -2,6 +2,10 @@
 
 class Solution {
     
+    private static final int BILLION = (int)1e9;
+    private static final int MILLION = (int)1e6;
+    private static final int THOUSAND = (int)1e3;
+    
     Map<Integer, String> V = new HashMap<>();
     
     Solution() {
@@ -37,32 +41,22 @@ class Solution {
     
     public String numberToWords(int num) {
         
-        if(num >= 1000000000) {
-            String t = V.get(num/1000000000) + " Billion";
-            if(num % 1000000000 == 0) {
-                return t;
-            }
-            return  t + " " + numberToWords(num % 1000000000);
+        if(num >= BILLION) {
+            String t = covertThreeDigitOrLess(num / BILLION) + " Billion";
+            if(num % BILLION == 0) return t;
+            return  t + " " + numberToWords(num % BILLION);
         }
         
-        if(num >= 1000000) {
-            String t = V.get(num/1000000);
-            if(t == null) {
-                t = covertThreeDigitOrLess(num/1000000);
-            }
-            t += " Million";
-            if(num % 1000000 == 0) return t;
-            return  t + " " + numberToWords(num % 1000000);
+        if(num >= MILLION) {
+            String t = covertThreeDigitOrLess(num / MILLION) + " Million";
+            if(num % MILLION == 0) return t;
+            return  t + " " + numberToWords(num % MILLION);
         }
         
-        if(num >= 1000) {
-            String t = V.get(num/1000);
-            if(t == null) {
-                t = covertThreeDigitOrLess(num/1000);
-            }
-            t += " Thousand";
-            if(num % 1000 == 0) return t;
-            return  t + " " + numberToWords(num % 1000);
+        if(num >= THOUSAND) {
+            String t = covertThreeDigitOrLess(num / THOUSAND) + " Thousand";
+            if(num % THOUSAND == 0) return t;
+            return  t + " " + numberToWords(num % THOUSAND);
         }
         
         return covertThreeDigitOrLess(num);
