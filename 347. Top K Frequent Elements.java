@@ -1,43 +1,31 @@
 class Solution {
-    
-    public List<Integer> topKFrequent(int[] nums, int k) {
-        HashMap<Integer, Integer> count = new HashMap<>();
-        for(int i = 0; i < nums.length; i++) {
-            count.put(nums[i], count.getOrDefault(nums[i], 0) + 1);
+    public int[] topKFrequent(int[] nums, int k) {
+        
+        Map<Integer, Integer> freq = new HashMap<>();
+        for(int num: nums) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
         }
         
-        PriorityQueue<Node> q = new PriorityQueue<>(new Comparator<Node>() {
-            public int compare(Node a, Node b) {
-                return a.freq < b.freq ? 1 : -1;
+        PriorityQueue<Integer> q = new PriorityQueue<>(
+            new Comparator<Integer>() {
+                public int compare(Integer a, Integer b) {
+                    return freq.get(a).compareTo(freq.get(b));
+                }
             }
-        });
+        );
         
-        count.forEach((x, y) -> {
-            q.add(new Node(x, y));
-        });
-        
-        List<Integer> ans = new ArrayList<>();
-        
-        while(!q.isEmpty() && k > 0) {
-            ans.add(q.poll().val);
-            k--;
+        // K Log N
+        for(Integer v: freq.keySet()) {
+            q.add(v);
+            if(q.size() > k) {
+                q.poll();
+            }
         }
-
+        
+        int ans[] = new int[k];
+        while(!q.isEmpty()) {
+            ans[--k] = q.poll();
+        }
         return ans;
-    }
-}
-
-class Node {
-    
-    int val;
-    int freq;
-    
-    Node(int _v, int _f) {
-        this.val = _v;
-        this.freq = _f;
-    }
-    
-    public String toString() {
-        return String.format("(val = %d, count = %d)", val, freq);
     }
 }
